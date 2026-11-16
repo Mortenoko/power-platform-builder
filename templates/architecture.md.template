@@ -1,0 +1,36 @@
+# {{PROJECT}}: architecture and data model
+
+Mermaid diagrams (render in GitHub, VS Code and most Markdown viewers). Environment {{environment}}. Updated {{date}}.
+
+## System overview
+
+```mermaid
+flowchart TD
+  App["Canvas app"] --> DV[("Dataverse")]
+  DV --> Flow["Cloud flows"]
+  Flow --> Out["Output (sites, documents, messages)"]
+  DV --> Agent["Copilot Studio agent or workflow"]
+```
+
+## Main process
+
+```mermaid
+flowchart TD
+  A["User action in the app"] --> B["Record saved with status Requested"]
+  B --> C["Flow starts, status In progress"]
+  C --> D["Result created"]
+  D --> E["Record set to Completed, steps logged"]
+```
+
+## Data model
+
+```mermaid
+erDiagram
+  CUSTOMER ||--o{ PROJECT : has
+  PROJECT ||--o{ LOG : steps
+  CUSTOMER { string name }
+  PROJECT { string name  choice status }
+  LOG { string step  choice status }
+```
+
+Notes: keep the column source of truth in the schema file (`scripts/<schema file>`).

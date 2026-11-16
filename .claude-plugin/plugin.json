@@ -1,0 +1,7 @@
+{
+  "name": "power-platform-builder",
+  "version": "0.1.0",
+  "description": "A working method for building Power Apps, Power Automate flows, Copilot Studio agents and Dataverse solutions with Claude through MCP tools, with approval gates, environment safety and lessons learned.",
+  "keywords": ["power-platform", "power-apps", "power-automate", "copilot-studio", "dataverse", "mcp", "alm"],
+  "license": "MIT"
+}

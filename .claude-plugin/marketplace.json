@@ -1,0 +1,11 @@
+{
+  "name": "power-platform-builder",
+  "owner": { "name": "Power Platform Builder maintainers" },
+  "plugins": [
+    {
+      "name": "power-platform-builder",
+      "source": "./",
+      "description": "Working method and lessons for building Power Platform solutions with Claude and MCP tools."
+    }
+  ]
+}

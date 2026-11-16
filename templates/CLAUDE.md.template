@@ -1,0 +1,33 @@
+# {{PROJECT}}: project conventions
+
+{{One sentence: what this app/flow/agent does.}} Read `README.md` for the data model, URLs and runbook.
+
+## Hard rules
+
+- **Tenant:** {{tenant}}. **Account:** {{account}}. Use this account in every browser, picker and tool; never another signed-in account.
+- **Environment:** {{environment name}} ({{environment URL}}, id {{environment id}}). Run `pac org who` and confirm before any change to Dataverse, flows or the app.
+- **Solution:** {{SolutionName}} (publisher {{Publisher}}, prefix `{{prefix}}`). Create components only inside it.
+- Ask before: publishing, turning flows on, sending messages, changing permissions or sharing, deleting data, granting consent prompts.
+- Never put secrets, tokens or personal data in files, commands or logs.
+
+## Layout of the repo
+
+| Path | What |
+|---|---|
+| `app/` | Canvas app source (.pa.yaml), synced from Studio |
+| `scripts/` | Schema as code, idempotent deploy, seed, solution export |
+| `flow/` | Flow builders and generated JSON |
+| `solution/` | Exported solution snapshot |
+| `docs/` | Architecture and runbooks |
+
+## Backlog
+
+{{Where the live backlog is, field names, and the rule that only "ready" items are built.}}
+
+## Lessons learned
+
+Add one line each time something surprised you (tool quirks, session expiry, data limits).
+
+## Definition of done
+
+1. Acceptance criteria met. 2. App compiles, flow ran once, agent answered a test prompt. 3. Solution exported, repo matches the environment. 4. README and schema file match. 5. The user is told what to refresh or publish and what was not tested.
