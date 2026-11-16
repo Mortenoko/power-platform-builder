@@ -20,15 +20,17 @@ Read `docs/guide.md` for the two-page overview.
 
 ## Install
 
-Add the four marketplaces (this plugin plus Microsoft's three), then install this plugin. It declares the Microsoft plugins as dependencies, so one install brings in all four:
+Add the four marketplaces (this plugin plus Microsoft's three), then install this plugin. It declares the Microsoft plugins as dependencies, so one install brings in all four. Run these in any terminal (this works for the Claude Code desktop app too, where typing `/plugin ...` only opens the plugin window):
 
+```bash
+claude plugin marketplace add Mortenoko/power-platform-builder
+claude plugin marketplace add microsoft/power-platform-skills
+claude plugin marketplace add microsoft/Dataverse-skills
+claude plugin marketplace add microsoft/skills-for-copilot-studio
+claude plugin install power-platform-builder@power-platform-builder
 ```
-/plugin marketplace add Mortenoko/power-platform-builder
-/plugin marketplace add microsoft/power-platform-skills
-/plugin marketplace add microsoft/Dataverse-skills
-/plugin marketplace add microsoft/skills-for-copilot-studio
-/plugin install power-platform-builder@power-platform-builder
-```
+
+In the terminal Claude Code you can type the same as slash commands instead: `/plugin marketplace add <repo>` and `/plugin install power-platform-builder@power-platform-builder`.
 
 The Microsoft marketplaces must be added first: Claude Code does not add them for you, and the install fails with "Is the marketplace added?" if one is missing. The plugins that come with it are `canvas-apps`, `dataverse` and `copilot-studio`; they do the actual authoring and this plugin adds method on top without duplicating them.
 
