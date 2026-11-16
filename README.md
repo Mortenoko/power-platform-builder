@@ -20,25 +20,19 @@ Read `docs/guide.md` for the two-page overview.
 
 ## Install
 
-Add this folder or its git repository as a plugin marketplace, then install `power-platform-builder`:
+Add the four marketplaces (this plugin plus Microsoft's three), then install this plugin. It declares the Microsoft plugins as dependencies, so one install brings in all four:
 
 ```
-/plugin marketplace add <path-or-git-url>
+/plugin marketplace add Mortenoko/power-platform-builder
+/plugin marketplace add microsoft/power-platform-skills
+/plugin marketplace add microsoft/Dataverse-skills
+/plugin marketplace add microsoft/skills-for-copilot-studio
 /plugin install power-platform-builder@power-platform-builder
 ```
 
-Then install Microsoft's companion plugins, which do the actual authoring (this plugin adds method on top and does not duplicate them):
+The Microsoft marketplaces must be added first: Claude Code does not add them for you, and the install fails with "Is the marketplace added?" if one is missing. The plugins that come with it are `canvas-apps`, `dataverse` and `copilot-studio`; they do the actual authoring and this plugin adds method on top without duplicating them.
 
-```
-/plugin marketplace add microsoft/power-platform-skills
-/plugin install canvas-apps@power-platform-skills
-/plugin marketplace add microsoft/Dataverse-skills
-/plugin install dataverse@dataverse-skills
-/plugin marketplace add microsoft/skills-for-copilot-studio
-/plugin install copilot-studio@skills-for-copilot-studio
-```
-
-Restart Claude Code, then ask Claude to run the `setup` skill.
+Restart Claude Code, then ask Claude to run the `setup` skill. To install from a local folder instead, use the folder path in the first command.
 
 ## Prerequisites
 

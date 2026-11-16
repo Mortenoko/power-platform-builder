@@ -22,9 +22,7 @@ Run these checks in order, skip what already works, and stop at the first failur
 
 This plugin adds method and lessons on top of Microsoft's own tooling. Install what you need:
 
-- Canvas apps: `/plugin marketplace add microsoft/power-platform-skills`, then `/plugin install canvas-apps@power-platform-skills` (the Canvas Authoring MCP).
-- Dataverse: `/plugin marketplace add microsoft/Dataverse-skills`, then `/plugin install dataverse@dataverse-skills`.
-- Copilot Studio: `/plugin marketplace add microsoft/skills-for-copilot-studio`, then `/plugin install copilot-studio@skills-for-copilot-studio` (includes the MCP bridge).
+- Installing this plugin brings in `canvas-apps`, `dataverse` and `copilot-studio` as dependencies, provided the Microsoft marketplaces were added first (see the README). If one is missing, add it and reinstall: `/plugin marketplace add microsoft/power-platform-skills` (canvas-apps), `microsoft/Dataverse-skills` (dataverse), `microsoft/skills-for-copilot-studio` (copilot-studio).
 - Restart Claude Code after installing so the MCP servers load. Check `claude plugin list`.
 - Optional: a browser extension or built-in browser so Claude can use Studio and admin pages.
 
