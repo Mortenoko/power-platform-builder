@@ -15,15 +15,17 @@ Run these checks in order, skip what already works, and stop at the first failur
 | Python 3 | `python3 --version` | Dataverse scripts (SDK) |
 | Power Platform CLI | `pac` | environment, solution export/import |
 | .NET 10 SDK | `dotnet --list-sdks` | the canvas authoring MCP server |
+| Azure CLI | `az --version`, `az account show` | API tokens for the scripts (same account as `pac`) |
 | Node | `node --version` | browser-console scripts and flow builders (optional) |
 
 ## 2. Companion plugins (do not duplicate them)
 
 This plugin adds method and lessons on top of Microsoft's own tooling. Install what you need:
 
-- Canvas apps: the Canvas Authoring MCP plugin (`canvas-apps`).
-- Dataverse: the `dataverse` plugin (skills and the Dataverse MCP).
-- Copilot Studio: the `copilot-studio` plugin and its MCP bridge.
+- Canvas apps: `/plugin marketplace add microsoft/power-platform-skills`, then `/plugin install canvas-apps@power-platform-skills` (the Canvas Authoring MCP).
+- Dataverse: `/plugin marketplace add microsoft/Dataverse-skills`, then `/plugin install dataverse@dataverse-skills`.
+- Copilot Studio: `/plugin marketplace add microsoft/skills-for-copilot-studio`, then `/plugin install copilot-studio@skills-for-copilot-studio` (includes the MCP bridge).
+- Restart Claude Code after installing so the MCP servers load. Check `claude plugin list`.
 - Optional: a browser extension or built-in browser so Claude can use Studio and admin pages.
 
 ## 3. Sign in and pick the environment

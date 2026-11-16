@@ -17,6 +17,8 @@ Use together with the `method` skill and, for the JSON structure, a flow-authori
 
 ## Everything from code
 
+The plugin's `scripts/flow_tool.py` does steps 2 to 5 (`create`, `update`, `on`, `off`, `run`, `runs`); you supply the `clientdata` JSON from your own builder script. Run it with `DATAVERSE_URL` set and `az login` done.
+
 1. **Connection:** create it through the Copilot Studio bridge (prepare a plan, get the user's yes, run setup). It returns a connection reference with the default publisher prefix, **not in your solution**: add it with `AddSolutionComponent` (look up the component type code).
 2. **Create:** POST `workflows` with `category 5`, `type 1`, `primaryentity none`, `clientdata` as a JSON string and the solution header. `clientdata` is `{properties: {connectionReferences, definition}, schemaVersion}`; a connection reference entry is `{runtimeSource: "embedded", connection: {connectionReferenceLogicalName}, api: {name}}`, and actions refer to it by the connector name (for Dataverse an `OpenApiConnection` action such as `ListRecords`).
 3. **Edit:** PATCH `clientdata` on the row (the flow is off while you edit).

@@ -1,0 +1,12 @@
+{
+  "publisher": {"uniquename": "examplepub", "friendlyname": "Example Publisher", "prefix": "ex", "optionvalueprefix": 71234},
+  "solution": {"uniquename": "ExampleSolution", "friendlyname": "Example Solution", "version": "1.0.0.0"},
+  "tables": [
+    {"schema": "ex_Project", "display": "Project", "plural": "Projects", "name_column": ["ex_Name", "Name"]},
+    {"schema": "ex_Task", "display": "Task", "plural": "Tasks", "name_column": ["ex_Name", "Name"],
+     "choices": [{"schema": "ex_Status", "display": "Status", "options": {"Open": 100000000, "InProgress": 100000001, "Done": 100000002}}]}
+  ],
+  "lookups": [
+    {"from": "ex_task", "schema": "ex_Project", "display": "Project", "to": "ex_project"}
+  ]
+}

@@ -16,6 +16,8 @@ A Claude Code plugin with a working method for building **Power Apps, Power Auto
 
 Read `docs/guide.md` for the two-page overview.
 
+`scripts/` holds small, dependency-free helpers: `deploy_schema.py` (idempotent Dataverse schema from a JSON file, dry run by default), `flow_tool.py` (create, update, turn on, run and inspect a flow) and `dv.py` (token and Web API helper). They need `DATAVERSE_URL` and `az login`.
+
 ## Install
 
 Add this folder or its git repository as a plugin marketplace, then install `power-platform-builder`:
@@ -25,7 +27,24 @@ Add this folder or its git repository as a plugin marketplace, then install `pow
 /plugin install power-platform-builder@power-platform-builder
 ```
 
-Companion plugins needed for the actual authoring: the canvas apps, Dataverse and Copilot Studio plugins from Microsoft (see the `setup` skill).
+Then install Microsoft's companion plugins, which do the actual authoring (this plugin adds method on top and does not duplicate them):
+
+```
+/plugin marketplace add microsoft/power-platform-skills
+/plugin install canvas-apps@power-platform-skills
+/plugin marketplace add microsoft/Dataverse-skills
+/plugin install dataverse@dataverse-skills
+/plugin marketplace add microsoft/skills-for-copilot-studio
+/plugin install copilot-studio@skills-for-copilot-studio
+```
+
+Restart Claude Code, then ask Claude to run the `setup` skill.
+
+## Prerequisites
+
+Git, Python 3, the Power Platform CLI (`pac`), the .NET 10 SDK (canvas authoring MCP), the Azure CLI (`az`, used for API tokens in the scripts), and a Power Platform environment you may change. A work account in that tenant is needed for sign-in. Use a dev or sandbox environment.
+
+Two things cannot be done from code and need you: **sign-in and consent**, and **enabling co-authoring on a canvas app** (Studio, Settings, General), plus publishing.
 
 ## Scope
 

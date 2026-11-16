@@ -1,6 +1,7 @@
 {
   "name": "power-platform-builder",
   "owner": { "name": "Power Platform Builder maintainers" },
+  "description": "A working method and lessons for building Power Platform solutions with Claude.",
   "plugins": [
     {
       "name": "power-platform-builder",
