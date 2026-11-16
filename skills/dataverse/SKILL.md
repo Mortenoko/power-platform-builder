@@ -9,7 +9,7 @@ Use together with the `method` skill and the `dataverse` plugin skills (connect,
 
 ## Rules
 
-- Confirm the environment (`pac org who`) and the **solution and publisher prefix** before creating anything. The prefix is permanent. Create components only inside the solution.
+- Confirm the environment (`pac org who`) and the **solution and publisher prefix** before creating anything. The prefix is permanent. Create components only inside the solution. Let the user choose the prefix: list the environment's existing publishers, and if they want a new one propose a short neutral prefix and wait for their pick. Never derive it from their email or company name, and never use `new`.
 - Use the **Python SDK** for tables, columns and bulk data; use the Dataverse MCP for small reads and writes; use the raw Web API only where the SDK cannot (forms, views, global option sets, `$apply`, unbound actions, memo columns).
 - Keep the **schema as code** in one file, and make the deploy script idempotent with a dry-run default, an `--apply` switch and a verify step (check existence before each create).
 - Start from the plugin's `scripts/deploy_schema.py` (with `scripts/example_schema.json` as the format): set `DATAVERSE_URL`, copy and edit the schema file into the project, run it without flags for a dry run, then with `--apply`. Re-running changes nothing. It creates the publisher and solution if missing, so confirm the prefix with the user first.

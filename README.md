@@ -16,7 +16,7 @@ A Claude Code plugin with a working method for building **Power Apps, Power Auto
 
 Read `docs/guide.md` for the two-page overview.
 
-`scripts/` holds small, dependency-free helpers: `deploy_schema.py` (idempotent Dataverse schema from a JSON file, dry run by default), `flow_tool.py` (create, update, turn on, run and inspect a flow) and `dv.py` (token and Web API helper). They need `DATAVERSE_URL` and `az login`.
+`scripts/` holds small, dependency-free helpers: `doctor.py` (read-only machine check Claude runs during setup), `deploy_schema.py` (idempotent Dataverse schema from a JSON file, dry run by default), `flow_tool.py` (create, update, turn on, run and inspect a flow) and `dv.py` (token and Web API helper). The Dataverse and flow scripts need `DATAVERSE_URL` and `az login`; `doctor.py` needs neither.
 
 ## Install
 
@@ -36,11 +36,13 @@ The Microsoft marketplaces must be added first: Claude Code does not add them fo
 
 Restart Claude Code, then ask Claude to run the `setup` skill. To install from a local folder instead, use the folder path in the first command.
 
-## Prerequisites
+## Getting set up
 
-Git, Python 3, the Power Platform CLI (`pac`), the .NET 10 SDK (canvas authoring MCP), the Azure CLI (`az`, used for API tokens in the scripts), and a Power Platform environment you may change. A work account in that tenant is needed for sign-in. Use a dev or sandbox environment.
+After installing, restart the app and say **"set me up for Power Platform"** (or `/power-platform-builder:setup`). Claude checks your machine, installs missing tools after asking you once, installs any missing companion plugin, and signs in only to what you are about to use. You click the browser sign-in prompts; Claude does the rest.
 
-Two things cannot be done from code and need you: **sign-in and consent**, and **enabling co-authoring on a canvas app** (Studio, Settings, General), plus publishing.
+What you may need on the machine, depending on what you build (Claude checks and offers to install these): git, the Power Platform CLI (`pac`), the .NET 10 SDK (canvas apps only), and optionally Python and the Azure CLI for the helper scripts. Use a dev or sandbox environment.
+
+Things that cannot be done from code and need you: **sign-in and consent**, **enabling co-authoring on a canvas app** (Studio, Settings, General), and **publishing**.
 
 ## Scope
 
