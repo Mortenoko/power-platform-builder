@@ -11,7 +11,10 @@ Use together with the `method` skill and the `dataverse` plugin skills (connect,
 
 - Confirm the environment (`pac org who`) and the **solution and publisher prefix** before creating anything. The prefix is permanent. Create components only inside the solution.
 - Use the **Python SDK** for tables, columns and bulk data; use the Dataverse MCP for small reads and writes; use the raw Web API only where the SDK cannot (forms, views, global option sets, `$apply`, unbound actions, memo columns).
-- Keep the **schema as code** in one file, and make the deploy script idempotent with a verify step.
+- Keep the **schema as code** in one file, and make the deploy script idempotent with a dry-run default, an `--apply` switch and a verify step (check existence before each create).
+- The raw Web API works well for metadata with a bearer token from the Azure CLI. Send `MSCRM.SolutionUniqueName: <Solution>` on every metadata create so tables, columns and relationships land in the solution. URL-encode spaces in `$filter`.
+- Creating a lookup: POST `RelationshipDefinitions` with `"@odata.type": "Microsoft.Dynamics.CRM.OneToManyRelationshipMetadata"` (without it the payload is rejected on `ReferencedEntity`). Create the tables first and pause a few seconds.
+- Adding an existing component to the solution: `AddSolutionComponent`. Component type codes for newer components (for example connection references) differ per environment; look them up in `solutioncomponentdefinitions` instead of hard-coding.
 - Do not name a plain column with an `Id` suffix; it collides with a lookup navigation property later.
 - Choice values are integers; keep a table of label to value in the schema file.
 - Lookup `@odata.bind` keys use the navigation property name with exact casing and the entity set name (pluralisation is not always `+s`).

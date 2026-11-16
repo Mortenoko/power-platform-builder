@@ -7,13 +7,15 @@ description: Lessons and working patterns for building Power Apps canvas apps th
 
 Use together with the `method` skill. Edit only in the main session: sub-agents cannot use the authoring tools.
 
+**Prerequisite: co-authoring must be enabled on the app** (Studio, Settings, General) and the app saved, with one Studio tab open. If `connect` says "Coauthoring is not enabled for this app", stop and ask the user to enable it; see the `setup` skill. Do not work around it.
+
 ## Loop
 
 1. `sync_canvas` to a dedicated folder before editing, so you work on current YAML.
 2. Make small targeted edits (or run a generator for big screens).
 3. `compile_canvas`, then read the result. A "failed" result with only warnings can still have applied; check by syncing to a scratch folder.
 4. Look at the result in Studio (preview or screenshot). The preview can be stale; reload it.
-5. Save. **Publish only when the user says so.** Studio shows Save and Publish side by side; check before clicking.
+5. Save. **Publish only after the user gives a clear yes for that app, every time**: name the app and environment when you ask, and report what was compiled and what was not tested first. A previous yes does not cover the next publish. The authoring tools do not publish, and no code route was found, so the user publishes in Studio, where Save and Publish sit side by side; tell them which to click.
 
 ## Layout and controls
 
@@ -39,6 +41,10 @@ Use together with the `method` skill. Edit only in the main session: sub-agents 
 - Native many-to-many relationships cannot be read inside `ForAll`. Use a small link table (one row per record and value) and load it into a collection.
 - Load collections in the screen's `OnVisible`, not on every control. Collections hide delegation limits; keep an eye on the 500-row default.
 - A source created after Studio opened is missing from Add data: save, open Studio in a fresh tab, reconnect.
+- The Add data search matches display names (plural, for example "Tasks"), not the publisher prefix. A custom table can share its display name with a stock one; hover to see the logical name. Data sources added in Studio appear to the MCP only after the app is saved and co-authoring is connected.
+- A choice column's option set is named after the table, for example `'Status (Tasks)'.Done`. Reading a lookup in a gallery works with `ThisItem.<Lookup>.<column>`.
+- `sync_canvas` can reorder controls (a title label may come back after the gallery): that is cosmetic, check the screen.
+- In an environment with another UI language the system columns have local display names; use logical names in formulas.
 - When two sources share a table name, Studio suffixes the new one (`_1`). Plan the cut-over and remove the old source afterwards.
 
 ## Generators for large screens

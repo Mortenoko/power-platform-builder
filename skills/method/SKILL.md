@@ -25,6 +25,10 @@ Always ask first, even if the work was requested in general terms:
 
 An approval covers one action. A "publish" yes does not cover the next publish.
 
+## Code first, portal only when necessary
+
+Do the work through MCP tools, `pac` and the Web APIs. Send the user to a portal only for what has no code route: signing in and consent, approving a connection plan, enabling co-authoring on a canvas app, the first save of a new canvas app, and publishing. When you hand over a manual step, say exactly where to click and wait for confirmation. A permission-gated action (a connection, turning a flow on) is not manual: show the plan, get a clear yes, do it.
+
 ## 3. Build solution-first, source in the repo
 
 - Everything lives in a **solution** with a publisher prefix you chose on purpose (the prefix is permanent).

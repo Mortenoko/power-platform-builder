@@ -11,6 +11,14 @@ Use together with the `method` skill and the Copilot Studio plugin skills (autho
 
 Check status, sign in if needed, pick the environment (never choose production implicitly), and refresh the tool list before authoring. Keep the user's original request through the sign-in steps.
 
+## Authoring through the MCP
+
+- The MCP authors **GitHub Copilot harness** agents (and workflows). Classic agents cannot be edited this way.
+- After selecting the environment, load the new tools, then read the server's authoring guidance and schema before composing a definition. You write the full JSON; the server validates and saves.
+- Order: `validate` (no save) then `create` (saves a **draft**) then `test` (previews the draft, no publish needed). Updates need the agent id and the exact `expectedRevision` from the last save, and a complete definition (omitted tools are removed).
+- Tools bind to a real connection reference: list connections through `discover_resources`, never invent the reference name. A Dataverse MCP tool works with the Dataverse connector (`InvokeMCP`). Tell the agent in its instructions to answer only from tool results and to stay read-only when that is what you want.
+- Test with a prompt whose answer is known from seeded data, and check the answer against the data.
+
 ## Choosing the building block
 
 | Need | Use |

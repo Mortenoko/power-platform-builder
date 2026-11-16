@@ -15,6 +15,14 @@ Use together with the `method` skill and, for the JSON structure, a flow-authori
 - Activate with `statecode 1 / statuscode 2` only after the user approves; flows import switched off.
 - Before turning a flow on, check who it sends to and what it writes. Flows that notify people need explicit approval.
 
+## Everything from code
+
+1. **Connection:** create it through the Copilot Studio bridge (prepare a plan, get the user's yes, run setup). It returns a connection reference with the default publisher prefix, **not in your solution**: add it with `AddSolutionComponent` (look up the component type code).
+2. **Create:** POST `workflows` with `category 5`, `type 1`, `primaryentity none`, `clientdata` as a JSON string and the solution header. `clientdata` is `{properties: {connectionReferences, definition}, schemaVersion}`; a connection reference entry is `{runtimeSource: "embedded", connection: {connectionReferenceLogicalName}, api: {name}}`, and actions refer to it by the connector name (for Dataverse an `OpenApiConnection` action such as `ListRecords`).
+3. **Edit:** PATCH `clientdata` on the row (the flow is off while you edit).
+4. **Turn on:** PATCH `statecode 1`, `statuscode 2`, after the user approves.
+5. **Run and inspect:** for a manual trigger, POST `.../flows/<id>/triggers/manual/run?api-version=2016-11-01` on `api.flow.microsoft.com` (token for `https://service.flow.microsoft.com/`), then read `.../runs` and `.../runs/<id>/actions`. Check every action, not just the run status.
+
 ## Lessons
 
 - Update SharePoint items with an HTTP/REST MERGE if the `PatchItem` action fails on missing item or title.

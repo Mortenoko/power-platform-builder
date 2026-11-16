@@ -31,7 +31,7 @@ What makes it work is not the tools alone but a **method**:
 
 ## Getting started
 
-1. Install the plugin and run the `setup` skill.
+1. Install the plugin and run the `setup` skill. For canvas apps, **enable co-authoring on the app in Studio (Settings, General) and save it** before Claude connects; this is a manual step only you can do.
 2. Run `project-starter` in a new folder.
 3. Start with a small, real item and follow the gates.
 
