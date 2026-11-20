@@ -24,29 +24,34 @@ INSTALL = {
 # Which surface needs what, so Claude only sets up what the task requires.
 NEEDED_FOR = {
     "git": "all", "python": "scripts (optional)", "dotnet": "canvas apps (authoring MCP) and pac",
-    "pac": "environments and solutions (all surfaces)", "az": "scripts/deploy_schema.py and flow_tool.py (optional)",
-    "node": "optional",
+    "pac": "environments and solutions (all surfaces)", "az": "Dataverse scripts and the Power Automate plugin (az login)",
+    "node": "flows (Microsoft power-automate plugin, Node 18 or newer)",
 }
 
 
 def run(cmd, timeout=30):
     try:
-        p = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
+        p = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=timeout)
         return p.returncode, (p.stdout + p.stderr).strip()
     except Exception as e:  # missing binary, timeout
         return 1, str(e)
 
 
 def which(name):
-    return shutil.which(name) or (shutil.which("python3") if name == "python" else None)
+    if name == "python":  # python3 on mac/linux, python or the py launcher on Windows
+        return shutil.which("python3") or shutil.which("python") or shutil.which("py")
+    return shutil.which(name)
 
 
 def tool(name, cmd):
     path = which(name)
     if not path and name == "pac":
         import os
-        cand = os.path.expanduser("~/.dotnet/tools/pac")
-        path = cand if os.path.exists(cand) else None
+        for name_ in ("pac.exe", "pac"):
+            cand = os.path.join(os.path.expanduser("~"), ".dotnet", "tools", name_)
+            if os.path.exists(cand):
+                path = cand
+                break
     if not path:
         return {"installed": False, "needed_for": NEEDED_FOR[name], "install": INSTALL[name].get(OS)}
     rc, out = run(([path] + cmd[1:]) if cmd else [path, "--version"])
@@ -57,7 +62,7 @@ def tool(name, cmd):
 r = {"os": OS}
 r["tools"] = {
     "git": tool("git", ["git", "--version"]),
-    "python": tool("python", ["python3", "--version"]),
+    "python": tool("python", ["python", "--version"]),
     "dotnet": tool("dotnet", ["dotnet", "--list-sdks"]),
     "pac": tool("pac", ["pac", "help"]),
     "az": tool("az", ["az", "--version"]),
@@ -70,17 +75,23 @@ if r["tools"]["dotnet"].get("installed"):
 pacpath = which("pac") or ""
 if r["tools"]["pac"].get("installed"):
     import os
-    pacbin = shutil.which("pac") or os.path.expanduser("~/.dotnet/tools/pac")
+    pacbin = shutil.which("pac")
+    if not pacbin:
+        for name_ in ("pac.exe", "pac"):
+            cand = os.path.join(os.path.expanduser("~"), ".dotnet", "tools", name_)
+            if os.path.exists(cand):
+                pacbin = cand
+                break
     rc, out = run([pacbin, "org", "who"], 40)
     r["pac_environment"] = {"signed_in": rc == 0 and "Org URL" in out,
                             "details": [l.strip() for l in out.splitlines() if any(k in l for k in ("Connected as", "Friendly Name", "Org URL", "Environment ID"))]}
 if r["tools"]["az"].get("installed"):
-    rc, out = run(["az", "account", "show", "--query", "{user:user.name,tenant:tenantId}", "-o", "json"], 40)
-    r["az_account"] = {"signed_in": rc == 0, "details": out[:200] if rc == 0 else "not signed in (az login)"}
+    rc, out = run([shutil.which("az"), "account", "show", "--query", "{user:user.name,tenant:tenantId}", "-o", "json"], 40)
+    r["az_account"] = {"signed_in": rc == 0, "details": out[:200] if rc == 0 else "not signed in (az login --allow-no-subscriptions --tenant <tenant>)"}
 if shutil.which("claude"):
-    rc, out = run(["claude", "plugin", "list"], 40)
+    rc, out = run([shutil.which("claude"), "plugin", "list"], 40)
     names = [l.split("❯")[1].strip() for l in out.splitlines() if "❯" in l]
-    wanted = ["power-platform-builder", "canvas-apps", "dataverse", "copilot-studio"]
+    wanted = ["power-platform-builder", "canvas-apps", "dataverse", "copilot-studio", "power-automate"]
     r["claude_plugins"] = {"installed": names, "missing": [w for w in wanted if not any(n.startswith(w + "@") for n in names)]}
 
 if "--json" in sys.argv:

@@ -1,10 +1,12 @@
 """Tiny Dataverse / Power Automate Web API helper. Standard library only.
 
-Auth: a bearer token from the Azure CLI (`az login` with the same account as `pac`).
+Auth: a bearer token from the Azure CLI (`az login --allow-no-subscriptions --tenant <tenant>` with the same
+account as `pac`). No Azure subscription or Azure role is needed; the token is for the Power Platform
+environment, and what you can do depends on your roles there.
 Environment URL comes from the DATAVERSE_URL environment variable, e.g.
     export DATAVERSE_URL=https://<org>.<region>.dynamics.com
 """
-import json, os, subprocess, sys, urllib.error, urllib.request
+import json, os, shutil, subprocess, sys, urllib.error, urllib.request
 
 
 def org():
@@ -15,8 +17,11 @@ def org():
 
 
 def token(resource=None):
+    az = shutil.which("az")  # on Windows this resolves az.cmd, which a bare "az" would not
+    if not az:
+        sys.exit("Azure CLI (az) not found on PATH. Install it, then `az login --allow-no-subscriptions --tenant <tenant>`.")
     return subprocess.check_output(
-        ["az", "account", "get-access-token", "--resource", resource or org(),
+        [az, "account", "get-access-token", "--resource", resource or org(),
          "--query", "accessToken", "-o", "tsv"], text=True).strip()
 
 

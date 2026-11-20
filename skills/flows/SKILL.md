@@ -1,29 +1,23 @@
 ---
 name: flows
-description: Lessons and patterns for creating and deploying Power Automate cloud flows as code (Dataverse workflow records, solution-aware, connection references, environment variables) with Claude. Use when a flow must be created, changed, deployed or debugged.
+description: Method and lessons for building Power Automate cloud flows with Claude: use Microsoft's power-automate plugin (FlowAgent MCP) to create, edit, run and debug, with solution-first, connection references and approval gates on top. Use when a flow must be created, changed, deployed, turned on, run or debugged.
 ---
 
-# Power Automate flows as code
+# Power Automate flows
 
-Use together with the `method` skill and, for the JSON structure, a flow-authoring skill if one is installed.
+Use together with the `method` skill. **Do the authoring with Microsoft's `power-automate` plugin** (the FlowAgent MCP and its skills: `build-flow`, `create-flow`, `manage-flows`, `debug-flow`, `diagnose-flow`). It is installed as a dependency of this plugin; it needs Node.js 18 or newer and `az login`. This skill adds the method and lessons on top and does not duplicate it.
 
-## Principles
+## What this plugin adds
 
-- Flows are Dataverse `workflow` records (category 5). Create them through the Web API with the solution header (`MSCRM.SolutionUniqueName`), not by packing hand-written solution folders.
-- Generate the flow JSON from a **builder script** and keep the builder in the repo; the JSON is a build output.
-- Use **connection references** and **environment variables** for sites, lists and ids so the same solution moves between environments. Never hard-code ids.
-- Activate with `statecode 1 / statuscode 2` only after the user approves; flows import switched off.
-- Before turning a flow on, check who it sends to and what it writes. Flows that notify people need explicit approval.
+- **Solution-first.** Create the flow inside your solution (pass the solution to the create call), never loose in "My flows". Afterwards export and unpack the solution so the repo holds the definition.
+- **Connection references and environment variables** for sites, lists and ids, so the solution moves between environments. Never hard-code ids. Check the connection reference is **in the solution**: a reference created outside it (for example through the Copilot Studio bridge) lands with the default publisher prefix and must be added to the solution.
+- **Approval gates.** Turning a flow on (`publish_flow`) and running it (`run_flow`) need a clear yes from the user. Before either, say who the flow sends to and what it writes; a flow that notifies people needs explicit approval every time. Flows are created switched off.
+- **Verify, don't assume.** After a run, read every action's status, not only the run status. Say what was tested and what was not.
+- **Telemetry.** The Microsoft plugin sends pseudonymous usage metadata (tool names, outcome, environment, tenant and organisation ids) by default and can be switched off with `/power-automate:telemetry off`. Tell the user at setup so they can decide.
 
-## Everything from code
+## Fallback without the plugin
 
-The plugin's `scripts/flow_tool.py` does steps 2 to 5 (`create`, `update`, `on`, `off`, `run`, `runs`); you supply the `clientdata` JSON from your own builder script. Run it with `DATAVERSE_URL` set and `az login` done.
-
-1. **Connection:** create it through the Copilot Studio bridge (prepare a plan, get the user's yes, run setup). It returns a connection reference with the default publisher prefix, **not in your solution**: add it with `AddSolutionComponent` (look up the component type code).
-2. **Create:** POST `workflows` with `category 5`, `type 1`, `primaryentity none`, `clientdata` as a JSON string and the solution header. `clientdata` is `{properties: {connectionReferences, definition}, schemaVersion}`; a connection reference entry is `{runtimeSource: "embedded", connection: {connectionReferenceLogicalName}, api: {name}}`, and actions refer to it by the connector name (for Dataverse an `OpenApiConnection` action such as `ListRecords`).
-3. **Edit:** PATCH `clientdata` on the row (the flow is off while you edit).
-4. **Turn on:** PATCH `statecode 1`, `statuscode 2`, after the user approves.
-5. **Run and inspect:** for a manual trigger, POST `.../flows/<id>/triggers/manual/run?api-version=2016-11-01` on `api.flow.microsoft.com` (token for `https://service.flow.microsoft.com/`), then read `.../runs` and `.../runs/<id>/actions`. Check every action, not just the run status.
+If Node or the plugin is unavailable, a cloud flow is a Dataverse `workflow` row (category 5): POST it through the Web API with `clientdata` (a JSON string of `{properties: {connectionReferences, definition}, schemaVersion}`) and the `MSCRM.SolutionUniqueName` header. A connection reference entry is `{runtimeSource: "embedded", connection: {connectionReferenceLogicalName}, api: {name}}`. Turn on with `statecode 1`, `statuscode 2` after approval. Run a manual trigger with `POST .../flows/<id>/triggers/manual/run?api-version=2016-11-01` on `api.flow.microsoft.com` and read `.../runs` and `.../runs/<id>/actions`. Generate the JSON from a builder script kept in the repo.
 
 ## Lessons
 

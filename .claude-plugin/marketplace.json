@@ -1,6 +1,8 @@
 {
   "name": "power-platform-builder",
-  "owner": { "name": "Power Platform Builder maintainers" },
+  "owner": {
+    "name": "Power Platform Builder maintainers"
+  },
   "description": "A working method and lessons for building Power Platform solutions with Claude.",
   "allowCrossMarketplaceDependenciesOn": [
     "power-platform-skills",
@@ -13,9 +15,22 @@
       "source": "./",
       "description": "Working method and lessons for building Power Platform solutions with Claude and MCP tools.",
       "dependencies": [
-        { "name": "canvas-apps", "marketplace": "power-platform-skills" },
-        { "name": "dataverse", "marketplace": "dataverse-skills" },
-        { "name": "copilot-studio", "marketplace": "skills-for-copilot-studio" }
+        {
+          "name": "canvas-apps",
+          "marketplace": "power-platform-skills"
+        },
+        {
+          "name": "dataverse",
+          "marketplace": "dataverse-skills"
+        },
+        {
+          "name": "copilot-studio",
+          "marketplace": "skills-for-copilot-studio"
+        },
+        {
+          "name": "power-automate",
+          "marketplace": "power-platform-skills"
+        }
       ]
     }
   ]

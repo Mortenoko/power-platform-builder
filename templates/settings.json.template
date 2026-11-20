@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pac org who)",
+      "Bash(pac auth list)",
+      "Bash(pac env list:*)",
+      "Bash(pac solution list:*)",
+      "Bash(pac canvas list:*)",
+      "Bash(az account show:*)",
+      "Bash(az --version)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git --version)",
+      "Bash(dotnet --list-sdks)",
+      "Bash(node --version)",
+      "Bash(python3 *doctor.py*)",
+      "Bash(python *doctor.py*)",
+      "Bash(py *doctor.py*)",
+      "mcp__plugin_canvas-apps_canvas-authoring__list_data_sources",
+      "mcp__plugin_canvas-apps_canvas-authoring__get_data_source_schema",
+      "mcp__plugin_canvas-apps_canvas-authoring__list_controls",
+      "mcp__plugin_canvas-apps_canvas-authoring__describe_control",
+      "mcp__plugin_canvas-apps_canvas-authoring__list_apis",
+      "mcp__plugin_canvas-apps_canvas-authoring__describe_api",
+      "mcp__copilot-studio-mcp__copilot_studio_status",
+      "mcp__copilot-studio-mcp__copilot_studio_list_environments",
+      "mcp__flowagent__get_current_env",
+      "mcp__flowagent__list_environments",
+      "mcp__flowagent__list_flows"
+    ]
+  }
+}

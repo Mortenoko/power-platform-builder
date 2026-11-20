@@ -16,7 +16,7 @@ A Claude Code plugin with a working method for building **Power Apps, Power Auto
 
 Read `docs/guide.md` for the two-page overview.
 
-`scripts/` holds small, dependency-free helpers: `doctor.py` (read-only machine check Claude runs during setup), `deploy_schema.py` (idempotent Dataverse schema from a JSON file, dry run by default), `flow_tool.py` (create, update, turn on, run and inspect a flow) and `dv.py` (token and Web API helper). The Dataverse and flow scripts need `DATAVERSE_URL` and `az login`; `doctor.py` needs neither.
+`scripts/` holds small, dependency-free helpers: `doctor.py` (read-only machine check Claude runs during setup), `deploy_schema.py` (idempotent Dataverse schema from a JSON file, dry run by default), and `dv.py` (token and Web API helper). Flows are built with Microsoft's `power-automate` plugin. The Dataverse scripts need `DATAVERSE_URL` and `az login --allow-no-subscriptions --tenant <tenant>` (no Azure subscription or Azure permissions are needed; what you can do comes from your roles in the Power Platform environment); `doctor.py` needs neither.
 
 ## Install
 
@@ -32,7 +32,7 @@ claude plugin install power-platform-builder@power-platform-builder
 
 In the terminal Claude Code you can type the same as slash commands instead: `/plugin marketplace add <repo>` and `/plugin install power-platform-builder@power-platform-builder`.
 
-The Microsoft marketplaces must be added first: Claude Code does not add them for you, and the install fails with "Is the marketplace added?" if one is missing. The plugins that come with it are `canvas-apps`, `dataverse` and `copilot-studio`; they do the actual authoring and this plugin adds method on top without duplicating them.
+The Microsoft marketplaces must be added first: Claude Code does not add them for you, and the install fails with "Is the marketplace added?" if one is missing. The plugins that come with it are `canvas-apps`, `dataverse`, `copilot-studio` and `power-automate`; they do the actual authoring and this plugin adds method on top without duplicating them.
 
 Restart Claude Code, then ask Claude to run the `setup` skill. To install from a local folder instead, use the folder path in the first command.
 
@@ -40,7 +40,9 @@ Restart Claude Code, then ask Claude to run the `setup` skill. To install from a
 
 After installing, restart the app and say **"set me up for Power Platform"** (or `/power-platform-builder:setup`). Claude checks your machine, installs missing tools after asking you once, installs any missing companion plugin, and signs in only to what you are about to use. You click the browser sign-in prompts; Claude does the rest.
 
-What you may need on the machine, depending on what you build (Claude checks and offers to install these): git, the Power Platform CLI (`pac`), the .NET 10 SDK (canvas apps only), and optionally Python and the Azure CLI for the helper scripts. Use a dev or sandbox environment.
+What you may need on the machine, depending on what you build (Claude checks and offers to install these): git, the Power Platform CLI (`pac`), the .NET 10 SDK (canvas apps only), Node.js 18+ and the Azure CLI (flows), and optionally Python for the helper scripts. Windows works through the same steps; PowerShell commands are in the `setup` skill (not yet tested on Windows). Use a dev or sandbox environment.
+
+To avoid approval prompts for harmless read-only checks, `project-starter` adds a small allowlist to new projects (`templates/settings.json.template`); anything that writes, signs in, publishes or deletes still asks.
 
 Things that cannot be done from code and need you: **sign-in and consent**, **enabling co-authoring on a canvas app** (Studio, Settings, General), and **publishing**.
 
